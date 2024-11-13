@@ -1,7 +1,7 @@
-from selenium import webdriver
 import time
-from selenium.webdriver.common.by import By
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
@@ -49,18 +49,53 @@ class list_page:
         WebDriverWait(self.driver, 60).until(
             lambda d: d.execute_script("return document.readyState") == "complete"
         )
-        # action = ActionChains(self.driver)
+        action = ActionChains(self.driver)
         # action.key_down(Keys.CONTROL).send_keys("f").key_up(Keys.CONTROL).perform()
 
 
 
         for pk_dex, value in dic.items():
+            not_out=[]
             # action.send_keys(pk_dex).perform()
             # action.send_keys(Keys.RETURN).perform()
-            element = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.XPATH, f"//*[contains(text(), '{pk_dex}')]")))
 
-            self.driver.execute_script("arguments[0].scrollIntoView();", element)
+            tracking = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.XPATH, f"//div[text()='{pk_dex}']")))
+
+            self.driver.execute_script("arguments[0].scrollIntoView();", tracking)
             time.sleep(2)
+            if tracking.is_displayed():
+                otp = WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, f"// div[text() = '{pk_dex}'] / ancestor::tr // button[ @class = 'lazada-logistics-btn lazada-logistics-small lazada-logistics-btn-normal components--action-button--ainyAP7']")))
+                self.driver.execute_script("arguments[0].scrollIntoView();", otp)
+                time.sleep(2)
+                self.driver.execute_script("arguments[0].click();", otp)
+
+                otp1 = WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, "//input[@id='otp']")))
+                self.driver.execute_script("arguments[0].scrollIntoView();", otp1)
+                time.sleep(2)
+                self.driver.execute_script("arguments[0].click();", otp1)
+                action.send_keys(value).perform()
+                time.sleep(3)
+
+                otpout = WebDriverWait(self.driver, 10).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button[@class='lazada-logistics-btn lazada-logistics-medium lazada-logistics-btn-primary lazada-logistics-dialog-btn']")))
+                self.driver.execute_script("arguments[0].scrollIntoView();", otpout)
+                time.sleep(2)
+            else:
+                not_out.append(pk_dex)
+                continue
+            if otpout.is_enabled():
+                self.driver.execute_script("arguments[0].click();", otpout)
+                time.sleep(3)
+            else:
+                not_out.append(pk_dex)
+
+        print(not_out)
+
+
+
+
 
 
