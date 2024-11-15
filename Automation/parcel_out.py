@@ -1,5 +1,6 @@
 import time
 from PageObjects.list_page import list_page
+from PageObjects.Login import Login
 from Utilities.readProperties import ReadConfig
 import pytest
 from selenium import webdriver
@@ -10,21 +11,14 @@ class ParcelOut:
     baseURL = ReadConfig.getWebsiteURL()
     username = ReadConfig.getUseremail()
     password = ReadConfig.getUserpassword()
-    #
-    # def out_parcel(self, setup):
-    #
-    #     self.driver = setup
-    #     self.driver.get(self.baseURL)
-    #
-    #     title = self.driver.title
-    #
-    #     if title == "WiseMarket - Admin Panel":
-    #         assert True
-    #     else:
-    #         self.driver.save_screenshot(".\\Screenshots\\"+"test_homepage_title.png")
-    #         assert False
+
+    login = Login()
+
+    def
+
 
     def out(self, result):
+
         driver = webdriver.Chrome()
         driver.maximize_window()
         time.sleep(2)
