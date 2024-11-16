@@ -2,7 +2,7 @@ import re
 
 class ExtractDataFromText:
 
-    def extract_info(text):
+    def extract_info(self, text):
         # # Regex pattern for tracking number
         # tracking_pattern = 'PK-DEX\d+'
         # Regex pattern for OTP
@@ -19,7 +19,7 @@ class ExtractDataFromText:
         # tracking_number = text.split('Tracking Number ')[1].split('\n')[0]
         # return tracking_id, otp
 
-    def clean_otp(otp):
+    def clean_otp(self, otp):
         otp = otp.lower()
         if 'o' in otp:
             otp = otp.replace('o', '0')
@@ -32,17 +32,17 @@ class ExtractDataFromText:
 
         return otp
 
-    def clean_tracking(tracking):
+    def clean_tracking(self, tracking):
         tracking = tracking.replace('.', '')
         tracking = tracking.replace(',', '')
         return tracking
 
-    def extract_info_mobile_ss(text):
+    def extract_info_mobile_ss(self, text):
         text = text.strip()
         text = text.replace('\n', ' ')
         get_info = lambda info, key: info.split(key)[1].strip().split(' ')[0]
         otp = get_info(text, 'Package Collection')
-        otp = clean_otp(otp)
+        otp = self.clean_otp(otp)
         tracking_number = get_info(text, 'Tracking Number')
-        tracking_number = clean_tracking(tracking_number)
+        tracking_number = self.clean_tracking(tracking_number)
         return {'tracking_number': tracking_number, 'otp': otp }

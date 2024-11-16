@@ -1,3 +1,4 @@
+import json
 import os
 
 from Functions.ImageTextExtraction import ImageTextExtraction
@@ -5,15 +6,15 @@ from Functions.ExtractDataFromText import ExtractDataFromText
 
 class TrackingList:
 
-    def tracking_list(self, images_path):
-
+    def tracking_list(self):
+        images_path = "pics"
         images = os.listdir(images_path)
+
         result = {}
         image_extraction = ImageTextExtraction()
         extract_data = ExtractDataFromText()
 
         for image in images:
-
             data = image_extraction.process_image(f'{images_path}/{image}')
             text = image_extraction.read_text(data)
 
