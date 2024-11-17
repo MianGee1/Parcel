@@ -16,7 +16,7 @@ class ListPage:
         self.driver = driver
         self.locators = Locators.ListPageLocators()
 
-    def out(self, dic):
+    def out(self, out_list):
         WebDriverWait(self.driver, 60).until(
             lambda d: d.execute_script("return document.readyState") == "complete")
         action = ActionChains(self.driver)
@@ -27,16 +27,23 @@ class ListPage:
         time.sleep(2)
 
         not_out=[]
+        not_found = []
+        count =0
 
-        for pk_dex, value in dic.items():
+        for pk_dex, value in out_list.items():
+            count+=1
             try:
-                tracking_id = WebDriverWait(self.driver, 15).until(
-                    EC.visibility_of_element_located((By.XPATH, f"//div[text()='{pk_dex}']")))
+                if count > 1:
+                    tracking_id = WebDriverWait(self.driver, 5).until(
+                        EC.visibility_of_element_located((By.XPATH, f"//div[text()='{pk_dex}']")))
+                else:
+                    tracking_id = WebDriverWait(self.driver, 10).until(
+                        EC.visibility_of_element_located((By.XPATH, f"//div[text()='{pk_dex}']")))
 
                 self.driver.execute_script("arguments[0].scrollIntoView();", tracking_id)
                 time.sleep(2)
 
-                customer_collection = WebDriverWait(self.driver, 30).until(
+                customer_collection = WebDriverWait(self.driver, 10).until(
                     EC.element_to_be_clickable((By.XPATH, f"//div[text()='{pk_dex}']/ancestor::tr//button[@class='lazada-logistics-btn lazada-logistics-small lazada-logistics-btn-normal components--action-button--ainyAP7']"
 )))
                 self.driver.execute_script("arguments[0].click();", customer_collection)
@@ -57,15 +64,17 @@ class ListPage:
                     self.driver.execute_script("arguments[0].click();", cancel)
                     not_out.append(pk_dex)
 
-
             except TimeoutException:
-                not_out.append(pk_dex)
+                not_found.append(pk_dex)
 
             except Exception as e:
                 print(f"Error occurred for {pk_dex}: {e}")
                 not_out.append(pk_dex)
+                not_found.append((pk_dex))
 
-        print(not_out)
+        print("Parcels Not Found List: " + str(not_found) + "\n")
+
+        print("Parcels: Not Out List: " + str(not_out) + "\n")
 
 
 
