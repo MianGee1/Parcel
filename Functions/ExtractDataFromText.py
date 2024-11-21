@@ -41,8 +41,15 @@ class ExtractDataFromText:
         text = text.strip()
         text = text.replace('\n', ' ')
         get_info = lambda info, key: info.split(key)[1].strip().split(' ')[0]
-        otp = get_info(text, 'Package Collection')
+        try:
+            otp = re.search(r'\s(\d{6})' , text).group(0).strip()
+            tracking_number = re.search(r'\sPK-DEX\d+\s', text).group(0).strip()
+        except:
+            tracking_number = get_info(text, 'Tracking Number')
+            try:
+                otp = get_info(text, 'Package Collection')
+            except IndexError:
+                otp = get_info(text, 'Provide your OTP')
         otp = self.clean_otp(otp)
-        tracking_number = get_info(text, 'Tracking Number')
         tracking_number = self.clean_tracking(tracking_number)
         return {'tracking_number': tracking_number, 'otp': otp }
