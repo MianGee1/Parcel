@@ -43,7 +43,7 @@ class ExtractDataFromText:
         get_info = lambda info, key: info.split(key)[1].strip().split(' ')[0]
         try:
             otp = re.search(r'\s(\d{6})' , text).group(0).strip()
-            tracking_number = re.search(r'\sPK-DEX\d+\s', text).group(0).strip()
+            tracking_number = re.search(r'\sPK-DEX\d{8,}\s', text).group(0).strip()
         except:
             tracking_number = get_info(text, 'Tracking Number')
             try:
