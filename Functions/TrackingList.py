@@ -118,6 +118,8 @@ class TrackingList:
                     not_extracted.append(image)
             not_extracted = list(set(not_extracted))
 
+        print(not_extracted, '\n', len(not_extracted))
+
         for image in not_extracted:
             data = image_extraction.process_image(f'{images_path}/{image}')
 
@@ -147,6 +149,8 @@ class TrackingList:
                         not_extracted.append(image)
                 else:
                     not_extracted.append(image)
+
+        not_extracted = list(set(not_extracted))
 
         print(not_extracted, '\n', len(not_extracted))
 

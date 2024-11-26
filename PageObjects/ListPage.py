@@ -16,15 +16,33 @@ class ListPage:
         self.driver = driver
         self.locators = Locators.ListPageLocators()
 
-    def out(self, out_list):
+    def scroll(self):
         WebDriverWait(self.driver, 60).until(
             lambda d: d.execute_script("return document.readyState") == "complete")
-        action = ActionChains(self.driver)
+        # Set the scroll step and delay
+        scroll_step = 20  # Number of pixels to scroll in each step
+        scroll_delay = 0.05  # Delay between each scroll in seconds
+
+        # Get the total height of the page
+        total_height = self.driver.execute_script("return document.body.scrollHeight")
+
+        # Start scrolling in steps
+        for scroll_position in range(0, total_height, scroll_step):
+            self.driver.execute_script(f"window.scrollTo(0, {scroll_position});")
+            time.sleep(scroll_delay)  # Add delay to avoid scrolling too fast
+
+        # Ensure the final position is reached
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
         time.sleep(2)
         self.driver.execute_script("window.scrollTo(0, 0);")
         time.sleep(2)
+
+    def out(self, out_list):
+        WebDriverWait(self.driver, 60).until(
+            lambda d: d.execute_script("return document.readyState") == "complete")
+        action = ActionChains(self.driver)
 
         not_out=[]
         not_found = []
@@ -58,6 +76,7 @@ class ListPage:
                         EC.element_to_be_clickable((self.locators.confirm_otp)))
                     self.driver.execute_script("arguments[0].click();", otp_out)
                     time.sleep(2)
+                    print ('out'+ {pk_dex} + {otp_out} + '\n')
                 except TimeoutException:
                     cancel = WebDriverWait(self.driver, 10).until(
                         EC.element_to_be_clickable(self.locators.cancel))

@@ -13,13 +13,6 @@ baseURL = ReadConfig.getWebsiteURL()
 username = ReadConfig.getUseremail()
 password = ReadConfig.getUserpassword()
 
-tracking = TrackingList()
-result = tracking.tracking_list()
-
-# out = ParcelOut()
-# time.sleep(2)
-# out.out(result)
-
 
 driver = webdriver.Chrome()
 driver.maximize_window()
@@ -38,6 +31,19 @@ login.clickLogin()
 time.sleep(5)
 
 parcel_out = ListPage(driver)
+parcel_out.scroll()
+
+tracking = TrackingList()
+result = tracking.tracking_list()
+
+
+# out = ParcelOut()
+# time.sleep(2)
+# out.out(result)
+
+#
+# parcel_out = ListPage(driver)
+print(result + '\n')
 parcel_out.out(result)
 
 
