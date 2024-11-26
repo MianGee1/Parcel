@@ -120,35 +120,35 @@ class TrackingList:
 
         print(not_extracted, '\n', len(not_extracted))
 
-        for image in not_extracted:
-            data = image_extraction.process_image(f'{images_path}/{image}')
-
-            # Process through multiple cleaning and text-reading steps
-
-            for step in ['original', 'gray', 'denoising', 'sharpening', 'thresh', 'resize']:
-
-                if step == 'original':
-                    text = image_extraction.read_text(data)
-                else:
-                    data = self.extract_text_from_step(data, image_extraction, step)
-                    text = image_extraction.read_text(data)
-
-                info = extractor.extract_info_mobile_ss(text)
-
-                tracking_number = info.get('tracking_number')
-                otp = info.get('otp')
-
-                if tracking_number and otp:
-                    if len(tracking_number) == 15 and len(otp) == 6:
-                        result[tracking_number] = otp
-                        if image in not_extracted:
-                            not_extracted = list(set(not_extracted))
-                            not_extracted.remove(image)
-                        break  # Stop processing further once valid data is found
-                    else:
-                        not_extracted.append(image)
-                else:
-                    not_extracted.append(image)
+        # for image in not_extracted:
+        #     data = image_extraction.process_image(f'{images_path}/{image}')
+        #
+        #     # Process through multiple cleaning and text-reading steps
+        #
+        #     for step in ['original', 'gray', 'denoising', 'sharpening', 'thresh', 'resize']:
+        #
+        #         if step == 'original':
+        #             text = image_extraction.read_text(data)
+        #         else:
+        #             data = self.extract_text_from_step(data, image_extraction, step)
+        #             text = image_extraction.read_text(data)
+        #
+        #         info = extractor.extract_info_mobile_ss(text)
+        #
+        #         tracking_number = info.get('tracking_number')
+        #         otp = info.get('otp')
+        #
+        #         if tracking_number and otp:
+        #             if len(tracking_number) == 15 and len(otp) == 6:
+        #                 result[tracking_number] = otp
+        #                 if image in not_extracted:
+        #                     not_extracted = list(set(not_extracted))
+        #                     not_extracted.remove(image)
+        #                 break  # Stop processing further once valid data is found
+        #             else:
+        #                 not_extracted.append(image)
+        #         else:
+        #             not_extracted.append(image)
 
         not_extracted = list(set(not_extracted))
 

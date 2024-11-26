@@ -43,7 +43,7 @@ result = tracking.tracking_list()
 
 #
 # parcel_out = ListPage(driver)
-print(result + '\n')
+print(result)
 parcel_out.out(result)
 
 

@@ -88,7 +88,6 @@ class ListPage:
 
             except Exception as e:
                 print(f"Error occurred for {pk_dex}: {e}")
-                not_out.append(pk_dex)
                 not_found.append((pk_dex))
 
         print("Parcels Not Found List: " + str(not_found) + "\n")

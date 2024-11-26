@@ -70,11 +70,11 @@ class ExtractDataFromText:
     #     return {'tracking_number': tracking_number, 'otp': otp }
 
     def clean_otp(self, otp):
-        return otp.lower().replace('o', '0').replace('n', '11').replace('s', '5')
+        return otp.lower().replace('o', '0').replace('n', '11').replace('s', '5').replace(']','1').replace('N', '11').replace('I','1').replace('T','1').replace('?','2').replace(':', '-').strip()
 
     def clean_tracking(self, tracking):
         tracking = tracking[:5].upper() + tracking[5:]
-        return tracking.replace('.', '').replace(',', '').replace('N', '11').replace('I','1').replace('T','1').replace('?','2').replace(':', '-').strip()
+        return tracking.replace('.', '').replace(',', '').replace('o', '0').replace('n', '11').replace('s', '5').replace(']','1').replace('N', '11').replace('I','1').replace('T','1').replace('?','2').replace(':', '-').strip()
 
     def extract_tracking_number(self, text):
         # Try extracting tracking number using regex
